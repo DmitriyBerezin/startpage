@@ -26,6 +26,11 @@ function LoginCtrl($scope, $rootScope, $http, $location) {
 				$scope.error = data.error;
 			});
   	}
+
+  	$scope.logout = function() {
+		$rootScope.user = null;
+  		$location.path("/index");
+  	}
 }
 LoginCtrl.$inject = ['$scope', '$rootScope', '$http', '$location'];
 
