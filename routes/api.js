@@ -3,7 +3,6 @@
  */
 
 exports.name = function (req, res) {
-  debugger
   res.json({
   	name: 'Bob'
   });

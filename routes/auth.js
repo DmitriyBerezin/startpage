@@ -7,7 +7,8 @@ var passport = require('passport'),
     usersModel = mongoose.model('users', new Schema({
       properties: [
           'username',
-          'password'
+          'password',
+          'email'
       ]
     }));
 
@@ -62,5 +63,20 @@ exports.authenticate = function (req, res, next) {
       
       return res.json({ user: user });
     });
+  })(req, res, next);
+};
+
+exports.register = function (req, res, next) {
+  var user = new usersModel();
+  user.username = req.body.userName;
+  user.password = req.body.password;
+  //user.email = req.body.email;
+
+  user.save(function(err) {
+    debugger
+    if (err)
+      return res.status(500).json({ error: err });
+    
+    return res.json({ user: user });
   })(req, res, next);
 };

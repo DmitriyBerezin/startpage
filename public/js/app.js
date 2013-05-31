@@ -7,6 +7,7 @@ angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives'])
     $routeProvider
 		.when('/', {templateUrl: 'partials/index', controller: AppCtrl})
 		.when('/login', {templateUrl: 'partials/login', controller: LoginCtrl})
+		.when('/register', {templateUrl: 'partials/register', controller: LoginCtrl})
 		.otherwise({redirectTo: '/'});
 
     $locationProvider.html5Mode(true);

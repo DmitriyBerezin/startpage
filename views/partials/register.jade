@@ -1,0 +1,16 @@
+
+div(style="border: 1px solid; padding: 10px; margin: 10px; width: 250px;") Please, type the required information in order to register a new user
+	div
+		label Username:
+		input(type="text", ng-model="name")
+	div
+		label Email:
+		input(type="email", ng-model="email")
+	div
+		label Password:
+		input(type="password", ng-model="password")
+	div
+		label Repeat password:
+		input(type="password", ng-model="password_copy")
+	div
+		button.btn.btn-primary(ng-click="register(name, email, password)") Create account

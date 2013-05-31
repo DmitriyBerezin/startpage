@@ -49,6 +49,10 @@ app.get('/api/name', api.name);
 app.post('/auth/authenticate', function(req, res, next) {
   auth.authenticate(req, res, next);
 });
+app.post('/auth/register', function(req, res, next) {
+  auth.register(req, res, next);
+});
+
 
 // redirect all others to the index (HTML5 history)
 app.get('*', routes.index);
