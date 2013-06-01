@@ -1,8 +1,36 @@
 
+  if(process.env.VCAP_SERVICES){
+    var env = JSON.parse(process.env.VCAP_SERVICES);
+    var mongo = env['mongodb-1.8'][0]['credentials'];
+}
+else{
+    var mongo = {
+    "hostname":"localhost",
+    "port":27017,
+    "username":"",
+    "password":"",
+    "name":"",
+    "db":"users"
+    }
+}
+var generate_mongo_url = function(obj){
+    obj.hostname = (obj.hostname || 'localhost');
+    obj.port = (obj.port || 27017);
+    obj.db = (obj.db || 'test');
+    if(obj.username && obj.password){
+        return "mongodb://" + obj.username + ":" + obj.password + "@" + obj.hostname + ":" + obj.port + "/" + obj.db;
+    }
+    else{
+        return "mongodb://" + obj.hostname + ":" + obj.port + "/" + obj.db;
+    }
+}
+var mongourl = generate_mongo_url(mongo);
+//var mongourl = "mongodb://localhost/users";
+
 var passport = require('passport'),
   	LocalStrategy = require('passport-local').Strategy,
     mongoose = require('mongoose'),
-    db = mongoose.connect('mongodb://localhost/users'),
+    db = mongoose.connect(mongourl),
     Schema = mongoose.Schema,
     usersModel = mongoose.model('users', new Schema({
       username: 'string', password: 'string'
@@ -64,9 +92,7 @@ exports.authenticate = function (req, res, next) {
 
 exports.register = function (req, res, next) {
   var user = new usersModel({ username: req.body.userName, password: req.body.password });
-  debugger
   user.save(function(err) {
-    debugger
     if (err)
       return res.status(500).json({ error: err });
     
