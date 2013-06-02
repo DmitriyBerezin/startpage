@@ -32,7 +32,9 @@ var passport = require('passport'),
     mongoose = require('mongoose'),
     db = mongoose.connect(mongourl),
     Schema = mongoose.Schema,
-    usersModel = mongoose.model('users', { username: String, password: String });
+    usersModel = mongoose.model('users', { username: String, password: String }),
+    bcrypt = require('bcrypt');
+
 
 function findByUsername(username, password, fn) {
   usersModel.findOne({ username: username }, function (err, user) {
@@ -89,17 +91,24 @@ exports.authenticate = function (req, res, next) {
 };
 
 exports.register = function (req, res, next) {
-  var user = new usersModel({ username: req.body.userName, password: req.body.password });
-  user.save(function(err) {
-    if (err)
-      return res.status(500).json({ error: err });
-    else {
-      req.logIn(user, function (error) {
-        if (error)
-          throw error;
-        
-        return res.json({ user: user._doc });
-      })
-    }
+  bcrypt.genSalt(10, function(err, salt) {
+    bcrypt.hash(req.body.password, salt, function(err, hash) {
+        if (err)
+          throw err;
+
+        var user = new usersModel({ username: req.body.userName, password: hash });
+        user.save(function(err) {
+          if (err)
+            return res.status(500).json({ error: err });
+          else {
+            req.logIn(user, function (error) {
+              if (error)
+                throw error;
+              
+              return res.json({ user: user._doc });
+            })
+          }
+        });
+    });
   });
 };
