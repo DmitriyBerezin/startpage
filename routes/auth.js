@@ -32,9 +32,7 @@ var passport = require('passport'),
     mongoose = require('mongoose'),
     db = mongoose.connect(mongourl),
     Schema = mongoose.Schema,
-    usersModel = mongoose.model('users', new Schema({
-      username: 'string', password: 'string'
-    }));
+    usersModel = mongoose.model('users', { username: String, password: String });
 
 function findByUsername(username, password, fn) {
   usersModel.findOne({ username: username }, function (err, user) {
@@ -95,7 +93,13 @@ exports.register = function (req, res, next) {
   user.save(function(err) {
     if (err)
       return res.status(500).json({ error: err });
-    
-    return res.json({ user: user._doc });
-  })(req, res, next);
+    else {
+      req.logIn(user, function (error) {
+        if (error)
+          throw error;
+        
+        return res.json({ user: user._doc });
+      })
+    }
+  });
 };
