@@ -40,13 +40,17 @@ function findByUsername(username, password, fn) {
   usersModel.findOne({ username: username }, function (err, user) {
     if (err)
       return fn(err, null);
+    if (!user)
+      return fn(null, null);
+
     if (user) {
-      if (user._doc.password == password)
-        return fn(null, user._doc);
-      else
+      bcrypt.compare(password, user._doc.password, function(err, res) {
+        if (res)
+          return fn(null, user._doc);
+        
         return fn('Invalid password', null);
+      });    
     }
-    return fn(null, null);
   });
 }
 
