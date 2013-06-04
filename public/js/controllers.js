@@ -31,7 +31,6 @@ function LoginCtrl($scope, $rootScope, $http, $location) {
   		var params = { userName: userName, email: email, password: password };
   		$http.post("/auth/register", params)
 			.success(function(data, status, headers, config) {
-				debugger
 				$rootScope.user = userName;
 				$scope.error = null;
 				$location.path("/index");

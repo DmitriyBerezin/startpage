@@ -17,8 +17,8 @@ var app = module.exports = express();
 app.configure(function(){
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
-  app.use(express.cookieParser());
   app.use(express.bodyParser());
+  app.use(express.cookieParser());
   app.use(express.session({ secret: 'keyboard cat' }));
   app.use(flash());
   app.use(express.methodOverride());
@@ -46,12 +46,8 @@ app.get('/partials/:name', routes.partials);
 app.get('/api/name', api.name);
 
 // Authentication API
-app.post('/auth/authenticate', function(req, res, next) {
-  auth.authenticate(req, res, next);
-});
-app.post('/auth/register', function(req, res, next) {
-  auth.register(req, res, next);
-});
+app.post('/auth/authenticate', auth.authenticate);
+app.post('/auth/register', auth.register);
 
 
 // redirect all others to the index (HTML5 history)
