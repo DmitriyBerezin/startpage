@@ -116,3 +116,21 @@ exports.register = function (req, res, next) {
     });
   });
 };
+
+exports.checkAuthenticate = function (req, res, next) {
+  if (req.session.passport.id) {
+    usersModel.findById(req.session.passport.id, function(err, user) {
+      if (err)
+        throw error;
+      if (user) {
+        next();
+      }
+      else {
+        res.redirect('/auth/authenticate');    
+      }
+    });
+  }
+  else {
+    res.redirect('/auth/authenticate');
+  }
+}

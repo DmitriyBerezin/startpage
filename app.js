@@ -38,7 +38,7 @@ app.configure('production', function(){
 
 // Routes
 
-app.get('/', routes.index);
+app.get('/', auth.checkAuthenticate, routes.index);
 app.get('/partials/:name', routes.partials);
 
 // JSON API
