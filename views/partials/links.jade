@@ -1,0 +1,6 @@
+
+div.tags-container
+	div {{message}}
+	ul.tags-list.nav.nav-pills.nav-stacked(style="width: 200px")
+		li(ng-repeat="tag in tags")
+			a(href="#") {{tag.name}}

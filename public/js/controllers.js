@@ -20,7 +20,7 @@ function LoginCtrl($scope, $rootScope, $http, $location) {
 			.success(function(data, status, headers, config) {
 				$rootScope.user = userName;
 				$scope.error = null;
-				$location.path("/index");
+				$location.path("/links");
 			})
 			.error(function(data, status, headers, config) {
 				$scope.error = data.error;
@@ -33,7 +33,7 @@ function LoginCtrl($scope, $rootScope, $http, $location) {
 			.success(function(data, status, headers, config) {
 				$rootScope.user = userName;
 				$scope.error = null;
-				$location.path("/index");
+				$location.path("/links");
 			})
 			.error(function(data, status, headers, config) {
 				$scope.error = data.error;
@@ -48,11 +48,13 @@ function LoginCtrl($scope, $rootScope, $http, $location) {
 LoginCtrl.$inject = ['$scope', '$rootScope', '$http', '$location'];
 
 
-function MyCtrl1() {  
+function FavoritesCtrl($scope, $http) {
+	$http.get("/links/list", {})
+		.success(function(data, status, headers, config) {
+			$scope.tags = data;
+		})
+		.error(function(data, status, headers, config) {
+			debugger
+		});
 }
-MyCtrl1.$inject = [];
-
-
-function MyCtrl2() {
-}
-MyCtrl2.$inject = [];
+FavoritesCtrl.$inject = ['$scope', '$http'];

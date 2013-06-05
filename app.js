@@ -8,6 +8,7 @@ var
   routes = require('./routes'),
   api = require('./routes/api'),
   auth = require('./routes/auth'),
+  links = require('./routes/links'),
   passport = require('passport');
 
 var app = module.exports = express();
@@ -38,7 +39,7 @@ app.configure('production', function(){
 
 // Routes
 
-app.get('/', auth.checkAuthenticate, routes.index);
+app.get('/', routes.index);
 app.get('/partials/:name', routes.partials);
 
 // JSON API
@@ -49,6 +50,7 @@ app.get('/api/name', api.name);
 app.post('/auth/authenticate', auth.authenticate);
 app.post('/auth/register', auth.register);
 
+app.get('/links/list', links.list);
 
 // redirect all others to the index (HTML5 history)
 app.get('*', routes.index);
